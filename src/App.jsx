@@ -6,114 +6,16 @@ import {
   Volume2, Wifi, Folder, File as FileIcon, Send, Star, Pin, Smile
 } from "lucide-react";
 
+import { BIO } from "./data/bio";
+import { EXPERIENCE } from "./data/experience";
+import { PROJECTS } from "./data/projects";
+import { LANGUAGES, FRAMEWORKS } from "./data/skills";
+import { INTERESTS } from "./data/interests";
+import { CONTACT } from "./data/contact";
 
-const BIO = `Hi, I'm Isabella — a Computer Science student at the University
-of Central Florida, minoring in Secure Computing and Networking
-(Dean's List, GPA 3.8). I build full-stack web applications, from
-a university-wide search tool used by 70,000+ people to scrappy
-weekend hackathon projects. I like interfaces that feel fast and
-systems underneath that are even faster.
 
-Outside of class you'll find me shipping features as a web dev
-intern, designing graphics for Girls Who Code, or starting yet
-another side project I definitely have time for.
-
-Currently based in Orlando, FL.`;
-
-const EXPERIENCE = [
-  {
-    id: "ucf",
-    title: "Web Development Intern",
-    org: "University of Central Florida",
-    location: "Orlando, FL",
-    date: "Oct 2025 – Present",
-    type: "Internship",
-    bullets: [
-      "Engineered the university-wide search webpage for a campus of 70,000+ users, focusing on a high-performance interface using HTML, CSS, and JavaScript to integrate three APIs.",
-      "Developed and maintained responsive web applications, debugging and improving UI functionality across multiple environments.",
-      "Managed cloud-hosted deployments using Pantheon, Git-based workflows, and staging environments to test and validate new capabilities.",
-    ],
-  },
-  {
-    id: "idx",
-    title: "Software Engineering Intern",
-    org: "IDXExchange",
-    location: "Remote",
-    date: "Sep 2025 – Dec 2025",
-    type: "Internship",
-    bullets: [
-      "Designed, coded, and debugged full-stack components for a real estate search platform, contributing to end-to-end feature development.",
-      "Integrated external systems by connecting to CRMLS via the Trestle API; engineered efficient SQL database structures for high-volume data retrieval.",
-      "Deployed a fully functional property search application to a live server environment (InMotion Hosting with cPanel, running Linux, PHP, and MySQL).",
-    ],
-  },
-  {
-    id: "gwc",
-    title: "Graphic Designer",
-    org: "Girls Who Code",
-    location: "Orlando, FL",
-    date: "May 2025 – Present",
-    type: "Volunteer",
-    bullets: [
-      "Designs and launches all digital and print material for Girls Who Code events, promotions, and merchandising.",
-      "Collaborates with the marketing and executive team to execute multiple projects efficiently while communicating key information.",
-      "Creates consistent branding across all platforms to represent the Girls Who Code image and connect with other organizations.",
-    ],
-  },
-];
-
-const PROJECTS = [
-  {
-    id: "califorsale",
-    name: "CaliForSale.exe",
-    tech: "HTML · CSS · PHP · SQL · Linux",
-    date: "Dec 2025",
-    desc: [
-      "A real estate search tool built with PHP and SQL to manage a relational database of property listings.",
-      "Optimized database queries for complex filtering by location, price, and property type — sub-second response times.",
-    ],
-  },
-  {
-    id: "mealminder",
-    name: "MealMinder.exe",
-    tech: "Vite React · Tailwind CSS · Firebase · Git · Google Cloud AI Studio",
-    date: "Nov 2025",
-    desc: [
-      "A full-stack hackathon app that reduces food waste by tracking pantry inventory and generating recipes from what's on hand.",
-      "Integrated Google AI Studio to process user-entered grocery data and suggest optimized meal plans, improving engagement and utility.",
-    ],
-  },
-  {
-    id: "rpgfinder",
-    name: "RPGFinder.exe",
-    tech: "HTML · CSS · Express.js · Git · REST API",
-    date: "2024 – May 2026",
-    desc: [
-      "A platform for gaming enthusiasts to discover and review role-playing games, built on Node.js and MongoDB.",
-      "A seamless frontend that pulls from the backend to display dynamic content based on community feedback and metadata.",
-    ],
-  },
-];
-
-const LANGUAGES = ["Java", "Python", "C", "SQL", "JavaScript", "HTML/CSS"];
-const FRAMEWORKS = ["React", "Node.js", "Flask", "WordPress"];
-
-const INTERESTS = [
-  { id: "gaming", label: "Gaming & RPGs", icon: Gamepad2, note: "Built RPGFinder to scratch this itch — a discovery platform for role-playing games." },
-  { id: "security", label: "Secure Computing", icon: Shield, note: "Minoring in Secure Computing & Networking at UCF — curious about the systems underneath the interface." },
-  { id: "mentorship", label: "Mentorship & Design", icon: Users, note: "Designs branding and event material for Girls Who Code to help more women get into CS." },
-  { id: "sustainability", label: "Food Waste & Sustainability", icon: UtensilsCrossed, note: "MealMinder was built to help people waste less food by tracking what they already have." },
-  { id: "hackathons", label: "Hackathons", icon: Terminal, note: "Enjoys the 24-hour sprint of turning an idea into a working full-stack app." },
-];
-
-const CONTACT = {
-  email: "ibellaaustin@gmail.com",
-  phone: "786-872-1841",
-  linkedin: "linkedin.com/in/isabellaaustin",
-  github: "github.com/izzyaustt",
-};
-
-// decorative twinkling stars scattered across the desktop
+//static config included window definitions and sparkles
+//twinkling stars scattered across the desktop
 const TWINKLES = [
   { top: "8%", left: "38%", size: 12, delay: "0s", color: "#FFFFFF" },
   { top: "22%", left: "46%", size: 8, delay: "0.6s", color: "#FFD65C" },
@@ -125,8 +27,7 @@ const TWINKLES = [
   { top: "36%", left: "70%", size: 8, delay: "0.2s", color: "#FFFFFF" },
 ];
 
-// ---------- small reusable bits ----------
-
+// reusable ui components
 const PixelButton = ({ children, onClick, className = "", title, active = false }) => (
   <button
     onClick={onClick}
@@ -198,7 +99,7 @@ function WindowFrame({ win, isMobile, isActive, onClose, onMinimize, onFocus, on
             </PixelButton>
           </div>
         </div>
-        {/* menu bar (decorative, authentic touch) */}
+        {/* menu bar*/}
         <div
           className="flex gap-3 px-2 text-[13px] shrink-0"
           style={{ background: "#C0C0C0", fontFamily: "'Space Mono', monospace", color: "#000" }}
@@ -242,6 +143,7 @@ function SectionHeading({ children, icon: Icon }) {
   );
 }
 
+//feature components
 function AboutContent() {
   return (
     <div className="p-4" style={{ fontFamily: "'Space Mono', monospace" }}>
@@ -576,7 +478,7 @@ function WelcomeSticky({ onSayHello }) {
   );
 }
 
-// ---------- visitor counter (90s homepage classic) ----------
+// ---------- visitor counter (hardcoded for now) ----------
 
 function VisitorCounter() {
   return (
@@ -608,12 +510,12 @@ function VisitorCounter() {
 
 function BootScreen({ onDone }) {
   const lines = [
-    "IZZY-OS v1.0 — 640K CAREER MEMORY OK",
-    "Loading BIO.SYS ..................... OK",
+    "ISABELLA-OS v1.0 — BOOT UP ........... OK",
+    "Loading BIO.SYS ...................... OK",
     "Loading EXPERIENCE.DLL ............... OK",
     "Loading PROJECTS.EXE ................. OK",
     "Mounting SECURE_COMPUTING.MIN ........ OK",
-    "Starting UCF_SEARCH.SRV .............. OK",
+    "Starting PORTFOLIO.EXE  .............. OK",
     "",
     "Welcome, Isabella.",
   ];
