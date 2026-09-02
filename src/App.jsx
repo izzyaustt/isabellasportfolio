@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 
 
+
 //static config included window definitions and sparkles
 //twinkling stars scattered across the desktop
 const TWINKLES = [
@@ -43,7 +44,11 @@ import { WelcomeSticky} from "./components/desktop/WelcomeSticky";
 import { VisitorCounter } from "./components/desktop/VisitorCounter";
 import { BootScreen } from "./components/desktop/BootScreen";
 
-// ---------- main app ----------
+//hook imports
+import useWindowManager from "./hooks/useWindowManager";
+import { useClock } from "./hooks/useClock";
+import { useMediaQuery } from "./hooks/useMediaQuery";
+// main app
 
 const WINDOW_DEFS = [
   { id: "system", title: "My Computer — Properties", icon: Monitor, color: "#1084D0", w: 460, h: 380, x: 60, y: 40, Content: SystemContent },
@@ -57,101 +62,27 @@ const WINDOW_DEFS = [
 
 export default function IzzyOSPortfolio() {
   const [booted, setBooted] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [windows, setWindows] = useState({});
-  const [activeId, setActiveId] = useState(null);
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [startOpen, setStartOpen] = useState(false);
-  const [now, setNow] = useState(new Date());
-  const zRef = useRef(10);
-  const dragRef = useRef(null);
+ // const [now, setNow] = useState(new Date());
 
-  useEffect(() => {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&display=swap";
-    document.head.appendChild(link);
+  const {
+    windows,
+    activeId,
+    openWindow,
+    closeWindow,
+    minimizeWindow,
+    focusWindow,
+    onDragStart,
+  } = useWindowManager(WINDOW_DEFS);
 
-    const check = () => setIsMobile(window.innerWidth < 700);
-    check();
-    window.addEventListener("resize", check);
-
-    const clock = setInterval(() => setNow(new Date()), 1000 * 15);
-    return () => {
-      window.removeEventListener("resize", check);
-      clearInterval(clock);
-      document.head.removeChild(link);
-    };
-  }, []);
-
-  const openWindow = useCallback((id) => {
-    setSelectedIcon(null);
-    setStartOpen(false);
-    setWindows((prev) => {
-      const def = WINDOW_DEFS.find((w) => w.id === id);
-      zRef.current += 1;
-      if (prev[id]) {
-        return { ...prev, [id]: { ...prev[id], minimized: false, z: zRef.current } };
-      }
-      return {
-        ...prev,
-        [id]: { id, x: def.x, y: def.y, w: def.w, h: def.h, z: zRef.current, minimized: false },
-      };
-    });
-    setActiveId(id);
-  }, []);
-
-  const closeWindow = (id) => {
-    setWindows((prev) => {
-      const next = { ...prev };
-      delete next[id];
-      return next;
-    });
-    if (activeId === id) setActiveId(null);
-  };
-
-  const minimizeWindow = (id) => {
-    setWindows((prev) => ({ ...prev, [id]: { ...prev[id], minimized: true } }));
-    if (activeId === id) setActiveId(null);
-  };
-
-  const focusWindow = (id) => {
-    zRef.current += 1;
-    setWindows((prev) => ({ ...prev, [id]: { ...prev[id], minimized: false, z: zRef.current } }));
-    setActiveId(id);
-  };
-
-  const onDragStart = (e, id) => {
-    focusWindow(id);
-    const win = windows[id];
-    dragRef.current = { id, offsetX: e.clientX - win.x, offsetY: e.clientY - win.y };
-  };
-
-  useEffect(() => {
-    const onMove = (e) => {
-      if (!dragRef.current) return;
-      const { id, offsetX, offsetY } = dragRef.current;
-      setWindows((prev) => {
-        if (!prev[id]) return prev;
-        const nx = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - 100));
-        const ny = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - 80));
-        return { ...prev, [id]: { ...prev[id], x: nx, y: ny } };
-      });
-    };
-    const onUp = () => { dragRef.current = null; };
-    window.addEventListener("mousemove", onMove);
-    window.addEventListener("mouseup", onUp);
-    return () => {
-      window.removeEventListener("mousemove", onMove);
-      window.removeEventListener("mouseup", onUp);
-    };
-  }, []);
-
+  const now = useClock();
+  const isMobile = useMediaQuery("(max-width: 699px)");
   if (!booted) return <BootScreen onDone={() => setBooted(true)} />;
-
+ 
   const openIds = Object.keys(windows);
-  const timeStr = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-
+  const timeStr = now;
+  //const isMobile = useMediaQuery("(max-width: 699px)");
   return (
     <div
       className="fixed inset-0 w-full h-full overflow-hidden select-none"
@@ -178,7 +109,7 @@ export default function IzzyOSPortfolio() {
             animation: "marqueeScroll 22s linear infinite",
           }}
         >
-          ★ thanks for stopping by my desktop ★ open to internships &amp; new-grad roles ★ let's build something together ★ scroll around, click on stuff, have fun ★
+          ★ thanks for stopping by my desktop ★ open to internships &amp; new-grad roles ★ let's build something together ★ scroll around, click on stuff, have fun! ★
         </span>
       </div>
 
