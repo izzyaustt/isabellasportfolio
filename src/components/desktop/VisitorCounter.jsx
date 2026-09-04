@@ -65,7 +65,7 @@ export function VisitorCounter() {
           label="GitHub"
           selected={selectedSocial === "github"}
           onSelect={() => setSelectedSocial("github")}
-          onOpen={() => window.open("https://github.com/YOUR_GITHUB_USERNAME", "_blank")}
+          onOpen={() => window.open("https://github.com/izzyaustt", "_blank")}
         />
         <DesktopIcon
           icon={Linkedin}
@@ -73,7 +73,7 @@ export function VisitorCounter() {
           label="LinkedIn"
           selected={selectedSocial === "linkedin"}
           onSelect={() => setSelectedSocial("linkedin")}
-          onOpen={() => window.open("https://linkedin.com/in/YOUR_LINKEDIN_USERNAME", "_blank")}
+          onOpen={() => window.open("https://linkedin.com/in/isabellaaustin", "_blank")}
         />
       </div>
     </div>
