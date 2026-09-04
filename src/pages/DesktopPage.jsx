@@ -8,15 +8,23 @@ import {
 
 // static config included window definitions and sparkles
 const TWINKLES = [
-  { top: "8%", left: "38%", size: 12, delay: "0s", color: "#FFFFFF" },
-  { top: "22%", left: "46%", size: 8, delay: "0.6s", color: "#FFD65C" },
-  { top: "62%", left: "40%", size: 10, delay: "1.1s", color: "#FFFFFF" },
-  { top: "78%", left: "34%", size: 7, delay: "1.6s", color: "#FFD65C" },
-  { top: "14%", left: "58%", size: 9, delay: "0.3s", color: "#FFFFFF" },
+  { top: "8%", left: "38%", size: 15, delay: "0s", color: "#FFFFFF" },
+  { top: "22%", left: "46%", size: 11, delay: "0.6s", color: "#FFD65C" },
+  { top: "62%", left: "40%", size: 12, delay: "1.1s", color: "#FFFFFF" },
+  { top: "78%", left: "34%", size: 13, delay: "1.6s", color: "#FFD65C" },
+  { top: "14%", left: "58%", size: 15, delay: "0.3s", color: "#FFFFFF" },
   { top: "48%", left: "62%", size: 11, delay: "0.9s", color: "#FFD65C" },
-  { top: "68%", left: "58%", size: 7, delay: "1.4s", color: "#FFFFFF" },
-  { top: "36%", left: "70%", size: 8, delay: "0.2s", color: "#FFFFFF" },
+  { top: "68%", left: "58%", size: 10, delay: "1.4s", color: "#FFFFFF" },
+  { top: "36%", left: "70%", size: 12, delay: "0.2s", color: "#FFFFFF" },
+  { top: "25%", left: "15%", size: 15, delay: "0.2s", color: "#FFFFFF" },
+  { top: "40%", left: "30%", size: 12, delay: "1.6s", color: "#FFFFFF" },
+  { top: "70%", left: "15%", size: 15, delay: "0.2s", color: "#FFD65C" },
 ];
+
+// hook imports
+import useWindowManager from "../hooks/useWindowManager";
+import { useClock } from "../hooks/useClock";
+import { useMediaQuery } from "../hooks/useMediaQuery";
 
 // reusable ui components
 import { PixelButton } from "../components/ui/PixelButton";
@@ -40,10 +48,6 @@ import { WelcomeSticky } from "../components/desktop/WelcomeSticky";
 import { VisitorCounter } from "../components/desktop/VisitorCounter";
 import { BootScreen } from "../components/desktop/BootScreen";
 
-// hook imports
-import useWindowManager from "../hooks/useWindowManager";
-import { useClock } from "../hooks/useClock";
-import { useMediaQuery } from "../hooks/useMediaQuery";
 
 const WINDOW_DEFS = [
   { id: "system", title: "My Computer — Properties", icon: Monitor, color: "#1084D0", w: 460, h: 380, x: 60, y: 40, Content: SystemContent },
@@ -68,6 +72,7 @@ export function DesktopPage() {
     minimizeWindow,
     focusWindow,
     onDragStart,
+    onResizeStart, 
   } = useWindowManager(WINDOW_DEFS);
 
   const now = useClock();
@@ -186,6 +191,7 @@ export function DesktopPage() {
             onMinimize={minimizeWindow}
             onFocus={() => focusWindow(def.id)}
             onDragStart={onDragStart}
+            onResizeStart={onResizeStart}
           >
             <def.Content />
           </WindowFrame>

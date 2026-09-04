@@ -1,16 +1,14 @@
 import { PixelButton } from "./PixelButton";
 import { Minus, Square, X } from "lucide-react";
 
-
-
-export function WindowFrame({ win, isMobile, isActive, onClose, onMinimize, onFocus, onDragStart, children }) {
+export function WindowFrame({ win, isMobile, isActive, onClose, onMinimize, onFocus, onDragStart, onResizeStart, children }) {
   if (win.minimized) return null;
   const style = isMobile
     ? { left: 0, top: 0, width: "100%", height: "calc(100% - 44px)", position: "absolute", zIndex: win.z }
     : { left: win.x, top: win.y, width: win.w, height: win.h, position: "absolute", zIndex: win.z };
 
   return (
-    <div style={style} onMouseDown={onFocus} className="flex flex-col shadow-2xl">
+    <div style={style} onMouseDown={onFocus} className="flex flex-col shadow-2xl relative">
       <div
         style={{
           background: "#C0C0C0",
@@ -77,6 +75,20 @@ export function WindowFrame({ win, isMobile, isActive, onClose, onMinimize, onFo
           {children}
         </div>
       </div>
+
+      {/* Resize Handles (Edges and Corners) */}
+      {!isMobile && onResizeStart && (
+        <>
+          <div onMouseDown={(e) => onResizeStart(e, win.id, "t")} className="absolute top-0 left-2 right-2 h-1.5 cursor-ns-resize" />
+          <div onMouseDown={(e) => onResizeStart(e, win.id, "b")} className="absolute bottom-0 left-2 right-2 h-1.5 cursor-ns-resize" />
+          <div onMouseDown={(e) => onResizeStart(e, win.id, "l")} className="absolute top-2 bottom-2 left-0 w-1.5 cursor-ew-resize" />
+          <div onMouseDown={(e) => onResizeStart(e, win.id, "r")} className="absolute top-2 bottom-2 right-0 w-1.5 cursor-ew-resize" />
+          <div onMouseDown={(e) => onResizeStart(e, win.id, "nw")} className="absolute top-0 left-0 w-3 h-3 cursor-nwse-resize z-10" />
+          <div onMouseDown={(e) => onResizeStart(e, win.id, "ne")} className="absolute top-0 right-0 w-3 h-3 cursor-nesw-resize z-10" />
+          <div onMouseDown={(e) => onResizeStart(e, win.id, "sw")} className="absolute bottom-0 left-0 w-3 h-3 cursor-nesw-resize z-10" />
+          <div onMouseDown={(e) => onResizeStart(e, win.id, "se")} className="absolute bottom-0 right-0 w-3 h-3 cursor-nwse-resize z-10" />
+        </>
+      )}
     </div>
   );
 }
