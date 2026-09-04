@@ -1,12 +1,15 @@
 import {
   File as FileIcon, Star
 } from "lucide-react";
+
 export function DesktopIcon({ icon: Icon, label, color, onOpen, selected, onSelect, isMobile, badge }) {
   return (
     <button
-      onClick={() => (isMobile ? onOpen() : onSelect())}
-      onDoubleClick={() => !isMobile && onOpen()}
-      className="relative flex flex-col items-center w-[84px] gap-1 py-1 px-1"
+      onClick={() => {
+        onSelect();
+        onOpen();
+      }}
+      className="relative flex flex-col items-center w-[84px] gap-1 py-1 px-1 cursor-pointer"
       style={{ background: selected ? "rgba(10,36,106,0.35)" : "transparent" }}
     >
       <div className="relative">
